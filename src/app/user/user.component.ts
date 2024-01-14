@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DialogAddUserComponent } from '../dialog-add-user/dialog-add-user.component';
 import { User } from 'src/models/user.class';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
@@ -32,9 +32,7 @@ export class UserComponent implements OnInit {
     this.dialog.open(DialogAddUserComponent);
   }
 
-  getList(){
-    console.log(this.userService.users);
-    
+  getList(){    
     return this.userService.users;
   }
   

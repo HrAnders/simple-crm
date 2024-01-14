@@ -1,40 +1,46 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, addDoc, collection, onSnapshot } from '@angular/fire/firestore';
+import {
+  Firestore,
+  addDoc,
+  collection,
+  onSnapshot,
+} from '@angular/fire/firestore';
 import { User } from 'src/models/user.class';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
-
   firestore: Firestore = inject(Firestore);
   user = new User();
   birthDate!: Date;
   loading: boolean = false;
-  users:any = [];
+  users: any = [];
   unsubUsersList;
 
-  constructor() { 
+  constructor() {
     this.unsubUsersList = this.subUsersList();
+    
   }
 
-  subUsersList(){
-    return onSnapshot((this.getUsersRef()), (list) => {
-      list.forEach(element => {
-        this.users.push(element.data());
-        console.log(this.users);
-        //console.log(element.id);   
+  subUsersList() {
+    return onSnapshot(this.getUsersRef(), (list) => {
+      list.forEach((element) => {
+        this.users.push(this.setUserData(element.data(), element.id));
       });
     });
   }
 
-  ngOnDestroy(){
+  
+
+  ngOnDestroy() {
     this.unsubUsersList();
   }
 
   saveUser() {
     this.loading = true;
     this.user.birthDate = this.birthDate.getTime();
+
     //console.log('Current user: ' + JSON.stringify(this.user));
     addDoc(this.getUsersRef(), this.user.toJSON())
       .catch((err) => {
@@ -50,4 +56,16 @@ export class UserService {
     return collection(this.firestore, 'users');
   }
 
+  setUserData(obj: any, id: string) {
+    return {
+      firstName: obj.firstName || '',
+      lastName: obj.lastName || '',
+      birthDate: obj.birthDate || '',
+      street: obj.street || '',
+      zipCode: obj.zipCode || '',
+      city: obj.city || '',
+      email: obj.email || '',
+      id: id,
+    };
+  }
 }

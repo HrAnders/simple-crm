@@ -49,6 +49,6 @@
   </div>
 </div>
 <div mat-dialog-actions>
-  <button [disabled]="userService.loading" mat-button>Cancel</button>
+  <button [disabled]="userService.loading" mat-button (click)="dialogRef.close()">Cancel</button>
   <button [disabled]="userService.loading" mat-button cdkFocusInitial (click)="saveUser()">Save</button>
 </div>

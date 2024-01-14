@@ -23,6 +23,7 @@ export class DialogAddUserComponent implements OnInit {
   ngOnInit(): void {}
 
   saveUser() {
+    this.userService.users = [];
     this.userService.saveUser();
     this.dialogRef.close(); 
   }
